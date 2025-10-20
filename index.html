@@ -2,48 +2,219 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DPR SPORTS - Matches App</title>
-  <link rel="icon" href="assets/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DPR SPORTS — Premium Dark UI</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css" />
-</head>
-<body class="dark-mode">
-  <nav class="navbar border-bottom sticky-top dark-mode">
-    <div class="container-fluid">
-      <span class="navbar-brand mb-0 h5">DPR SPORTS</span>
-      <div class="d-flex align-items-center gap-2">
-        <div class="form-check form-switch m-0">
-          <input class="form-check-input" type="checkbox" id="modeSwitch" checked>
-          <label class="form-check-label small" for="modeSwitch">Dark</label>
-        </div>
-        <button class="btn btn-outline-light btn-sm" id="resetBtn">Reset</button>
-      </div>
-    </div>
-  </nav>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0f14;           
+      --surface:#10161d;      
+      --surface-2:#0f141a;    
+      --border:#1b2430;       
+      --text:#e6eef6;         
+      --muted:#9fb0c0;        
+      --accent:#00e676;       
+      --accent-2:#00bcd4;     
+      --danger:#ff3b30;       
+      --badge:#17212b;        
+      --chip:#0f1b24;         
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
 
-  <div class="container-fluid p-3 pb-5">
-    <div class="card mb-3 shadow-sm border-0 card-band-a dark-mode">
-      <div class="card-body py-3">
-        <h5 class="mb-3">Creare Meci Nou</h5>
-        <div class="row g-2 align-items-end position-relative">
-          <div class="col-6"><label class="form-label small mb-1">Data</label><input type="date" class="form-control form-control-sm" id="dateMatch"></div>
-          <div class="col-6"><label class="form-label small mb-1">Ora</label><input type="time" class="form-control form-control-sm" id="timeMatch"></div>
-          <div class="col-6"><label class="form-label small mb-1">Echipă 1</label><input type="text" class="form-control form-control-sm autocomplete" placeholder="Caută echipă 1" id="team1"></div>
-          <div class="col-6"><label class="form-label small mb-1">Echipă 2</label><input type="text" class="form-control form-control-sm autocomplete" placeholder="Caută echipă 2" id="team2"></div>
-          <div class="col-6"><label class="form-label small mb-1">Pronostic</label>
-            <select class="form-select form-select-sm" id="prediction">
-              <option value="">Selectează pronosticul</option>
-              <option>1</option><option>1X</option><option>X2</option><option>2</option><option>12</option><option>BTTS</option><option>Over 1.5</option><option>Over 2.5</option>
-            </select></div>
-          <div class="col-6"><button class="btn btn-success btn-sm w-100 mt-3" id="createMatch">Creează Meci</button></div>
+    .topbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(11,15,20,.95),rgba(11,15,20,.75));backdrop-filter: blur(10px);border-bottom:1px solid var(--border)}
+    .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;letter-spacing:.3px}
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+
+    .filters{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .form-label{color:var(--muted);font-size:.78rem;margin-bottom:.35rem}
+    .form-control, .form-select{background:#0c1218;border:1px solid var(--border);color:var(--text)}
+    .form-control::placeholder{color:#587085}
+    .btn-ghost{color:var(--muted);border:1px solid var(--border);background:transparent}
+    .btn-ghost:hover{border-color:#2b3848;color:var(--text)}
+    .segmented{display:flex;gap:.35rem;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:.25rem}
+    .segmented .seg{flex:1 0 auto;padding:.45rem .8rem;border-radius:999px;color:var(--muted);cursor:pointer;user-select:none}
+    .seg.active{background:var(--accent);color:#001611;font-weight:600}
+
+    .cardx{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .cardx.alt{background:var(--surface-2)}
+    .meta{color:var(--muted);font-size:.82rem}
+    .badgex{background:var(--badge);border:1px solid var(--border);border-radius:999px;padding:.25rem .6rem;color:var(--text);display:inline-flex;align-items:center;gap:.35rem}
+    .badgex i{font-size:.9rem;color:var(--accent-2)}
+    .pill{background:linear-gradient(180deg,#0d2613,#08180c);border:1px solid #1d3e29;color:#a7ffcd}
+    .pill.red{background:linear-gradient(180deg,#2a1010,#170909);border-color:#4a1f1f;color:#ffb3ad}
+    .pill.cyan{background:linear-gradient(180deg,#09232a,#051a1f);border-color:#184b55;color:#a5f6ff}
+    .pill.orange{background:linear-gradient(180deg,#2a1e09,#1b1307);border-color:#4a381f;color:#ffdba5}
+    .chip{background:var(--chip);border:1px solid var(--border);border-radius:10px;padding:.25rem .5rem;color:#bcd}
+
+    .listx{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .rowx{display:grid;grid-template-columns:70px 1fr 70px;gap:.6rem;align-items:center;padding:.6rem .8rem;border-bottom:1px solid var(--border)}
+    .rowx:nth-child(4n+1), .rowx:nth-child(4n+2){background:var(--surface-2)}
+    .rowx:last-child{border-bottom:none}
+    .home{font-weight:600}
+    .vs{color:#6ea1b5}
+    .away{opacity:.95}
+    .kicker{display:flex;gap:.35rem;flex-wrap:wrap}
+
+    .switch input{display:none}
+    .switch .dot{width:36px;height:20px;border-radius:999px;background:#0c1218;border:1px solid var(--border);position:relative;display:inline-block;vertical-align:middle}
+    .switch .dot::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);transition:.25s}
+    .switch input:checked + .dot::after{left:18px}
+    .switch label{margin-left:.4rem;color:var(--muted)}
+
+    .ac-wrap{position:relative}
+    .ac-list{position:absolute;left:0;right:0;top:100%;z-index:40;background:#0d141b;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);max-height:220px;overflow-y:auto}
+    .ac-item{padding:.55rem .75rem;cursor:pointer}
+    .ac-item:hover{background:#0f1a23}
+
+    .divider{height:1px;background:var(--border);margin:1rem 0}
+    .ghost{opacity:.7}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container py-2">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="brand"><span class="dot"></span><span>DPR SPORTS</span></div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="switch d-flex align-items-center">
+            <input type="checkbox" id="modeSwitch" checked>
+            <span class="dot"></span>
+            <label for="modeSwitch" class="small">Dark</label>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="resetBtn"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
         </div>
       </div>
     </div>
-    <div id="matchesContainer"></div>
   </div>
 
-  <footer class="p-2 small text-center text-muted dark-mode">© 2025 DPR SPORTS</footer>
-  <script src="js/script.js"></script>
+  <div class="container py-3">
+    <div class="filters p-3 mb-3">
+      <div class="row g-2">
+        <div class="col-6 col-md-3">
+          <label class="form-label">Data</label>
+          <input type="date" class="form-control form-control-sm" id="fDate">
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label">Ora</label>
+          <input type="time" class="form-control form-control-sm" id="fTime">
+        </div>
+        <div class="col-12 col-md-3 ac-wrap">
+          <label class="form-label">Echipă 1</label>
+          <input type="text" class="form-control form-control-sm" id="team1" placeholder="Caută…">
+          <div class="ac-list d-none" id="ac1"></div>
+        </div>
+        <div class="col-12 col-md-3 ac-wrap">
+          <label class="form-label">Echipă 2</label>
+          <input type="text" class="form-control form-control-sm" id="team2" placeholder="Caută…">
+          <div class="ac-list d-none" id="ac2"></div>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label">Pronostic</label>
+          <select class="form-select form-select-sm" id="prediction">
+            <option value="">Alege…</option>
+            <option>1</option><option>1X</option><option>X2</option><option>2</option>
+            <option>12</option><option>BTTS</option><option>Over 1.5</option><option>Over 2.5</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3 d-flex align-items-end">
+          <button class="btn btn-success btn-sm w-100" id="createMatch"><i class="bi bi-plus-circle"></i> Creează Meci</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="cardsView" class="d-grid gap-3">
+      <div class="cardx p-3 ghost">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="h6 mb-1">Exemplu: Arsenal <span class="vs">vs</span> Atl. Madrid</div>
+            <div class="meta">22:00 • 21.10.2025, Marți</div>
+          </div>
+          <div class="kicker">
+            <span class="badgex pill"><i class="bi bi-graph-up"></i> 1X</span>
+            <span class="badgex"><i class="bi bi-lightning-charge"></i> Grad 8</span>
+            <span class="badgex"><i class="bi bi-record-circle"></i> BTTS</span>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="chip">Goluri: Peste 1.5</span>
+          <span class="chip">Cornere: 9–11</span>
+          <span class="chip">Cartonașe: 4.5+</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TEAMS = [
+      "Arsenal","Manchester City","Liverpool","Chelsea","Tottenham","Newcastle","Aston Villa","Manchester United","Brighton","West Ham",
+      "Juventus","Inter","Milan","Napoli","Roma","Lazio","PSG","Marseille","Barcelona","Real Madrid","Atletico Madrid",
+      "FCSB","CFR Cluj","Porto","Benfica","Ajax","PSV","Anderlecht","Club Brugge"
+    ];
+
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => document.querySelectorAll(sel);
+
+    function attachAutocomplete(input, listEl){
+      input.addEventListener('input', ()=>{
+        const q = input.value.trim().toLowerCase();
+        listEl.innerHTML = '';
+        if(!q){ listEl.classList.add('d-none'); return; }
+        const items = TEAMS.filter(t=>t.toLowerCase().includes(q)).slice(0,12);
+        items.forEach(name=>{
+          const d = document.createElement('div');
+          d.className = 'ac-item';
+          d.textContent = name;
+          d.addEventListener('click', ()=>{ input.value = name; listEl.classList.add('d-none'); });
+          listEl.appendChild(d);
+        });
+        listEl.classList.toggle('d-none', items.length===0);
+      });
+      input.addEventListener('blur', ()=> setTimeout(()=>listEl.classList.add('d-none'), 150));
+    }
+    attachAutocomplete($('#team1'), $('#ac1'));
+    attachAutocomplete($('#team2'), $('#ac2'));
+
+    const matches = [];
+    function render(){
+      const cards = $('#cardsView');
+      cards.querySelectorAll('.cardx:not(.ghost)').forEach(el=>el.remove());
+      matches.forEach((m,idx)=>{
+        const alt = (Math.floor(idx/2)%2===1) ? ' alt' : '';
+        const card = document.createElement('div');
+        card.className = 'cardx p-3'+alt;
+        card.innerHTML = `
+          <div class='d-flex justify-content-between align-items-center'>
+            <div>
+              <div class='h6 mb-1'>${m.home} <span class='vs'>vs</span> ${m.away}</div>
+              <div class='meta'>${m.time} • ${m.date}</div>
+            </div>
+            <div class='kicker'>
+              <span class='badgex pill'><i class='bi bi-graph-up'></i> ${m.pred}</span>
+            </div>
+          </div>`;
+        cards.appendChild(card);
+      });
+    }
+
+    $('#createMatch').addEventListener('click', ()=>{
+      const date = $('#fDate').value || new Date().toISOString().slice(0,10);
+      const time = $('#fTime').value || '20:00';
+      const home = $('#team1').value.trim();
+      const away = $('#team2').value.trim();
+      const pred = $('#prediction').value.trim();
+      if(!home || !away || !pred){ alert('Completează echipele și pronosticul.'); return; }
+      matches.push({date,time,home,away,pred});
+      $('#team1').value = ''; $('#team2').value='';
+      render();
+    });
+
+    render();
+  </script>
 </body>
 </html>
