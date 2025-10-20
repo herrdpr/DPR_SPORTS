@@ -1,0 +1,10 @@
+body.light-mode { background-color: #f8f8f8; color: #222; }
+body.dark-mode { background-color: #181818; color: #eee; }
+label { color: inherit !important; }
+.navbar.dark-mode, footer.dark-mode { background-color: #1e1e1e; color: #eee; }
+.navbar.light-mode, footer.light-mode { background-color: #fff; color: #222; }
+.card-band-a.dark-mode { background: #1a1a1a; }
+.card-band-b.dark-mode { background: #232323; }
+input, select { border-radius: 6px; }
+.autocomplete-items { background-color: #1e1e1e; color: #fff; border: 1px solid #444; }
+.autocomplete-items div:hover { background-color: #333; }
